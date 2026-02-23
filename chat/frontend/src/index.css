@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  html, body, #root { height: 100%; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 9999px; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-medium rounded-lg px-4 py-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply hover:bg-chat-hover text-gray-400 hover:text-white rounded-lg px-3 py-2 transition-colors;
+  }
+  .input-base {
+    @apply bg-chat-input border border-chat-border rounded-lg px-3 py-2 text-white placeholder-gray-500 outline-none focus:border-brand-500 transition-colors w-full text-sm;
+  }
+  .card {
+    @apply bg-chat-card border border-chat-border rounded-xl;
+  }
+  /* Bolha de mensagem recebida (contato) */
+  .bubble-in {
+    @apply bg-chat-card text-white rounded-2xl rounded-tl-sm px-4 py-2 max-w-[75%] break-words;
+  }
+  /* Bolha de mensagem enviada (agente) */
+  .bubble-out {
+    @apply bg-brand-700 text-white rounded-2xl rounded-tr-sm px-4 py-2 max-w-[75%] break-words;
+  }
+}
