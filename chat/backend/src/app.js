@@ -1,28 +1,28 @@
 'use strict';
 require('dotenv').config();
-const express     = require('express');
-const http        = require('http');
-const cors        = require('cors');
-const helmet      = require('helmet');
-const morgan      = require('morgan');
-const path        = require('path');
-const { Server }  = require('socket.io');
+const express = require('express');
+const http = require('http');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const path = require('path');
+const { Server } = require('socket.io');
 
-const db          = require('./config/db');
-const logger      = require('./config/logger');
+const db = require('./config/db');
+const logger = require('./config/logger');
 const socketService = require('./services/socket.service');
 
 // ── Rotas ──────────────────────────────────────────────────────
-const authRoutes         = require('./routes/auth.routes');
-const userRoutes         = require('./routes/user.routes');
+const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 const conversationRoutes = require('./routes/conversation.routes');
-const messageRoutes      = require('./routes/message.routes');
-const tagRoutes          = require('./routes/tag.routes');
-const quickReplyRoutes   = require('./routes/quickReply.routes');
-const settingsRoutes     = require('./routes/settings.routes');
-const webhookRoutes      = require('./routes/webhook.routes');
+const messageRoutes = require('./routes/message.routes');
+const tagRoutes = require('./routes/tag.routes');
+const quickReplyRoutes = require('./routes/quickReply.routes');
+const settingsRoutes = require('./routes/settings.routes');
+const webhookRoutes = require('./routes/webhook.routes');
 
-const app    = express();
+const app = express();
 const server = http.createServer(app);
 
 // ── Socket.io ──────────────────────────────────────────────────
@@ -53,14 +53,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/chat/storage', express.static(path.join(__dirname, '..', 'storage')));
 
 // ── Rotas da API ───────────────────────────────────────────────
-app.use('/chat/api/auth',          authRoutes);
-app.use('/chat/api/users',         userRoutes);
-app.use('/chat/api/conversations',  conversationRoutes);
-app.use('/chat/api/messages',       messageRoutes);
-app.use('/chat/api/tags',           tagRoutes);
-app.use('/chat/api/quick-replies',  quickReplyRoutes);
-app.use('/chat/api/settings',       settingsRoutes);
-app.use('/chat/api/webhook',        webhookRoutes);
+app.use('/chat/api/auth', authRoutes);
+app.use('/chat/api/users', userRoutes);
+app.use('/chat/api/conversations', conversationRoutes);
+app.use('/chat/api/messages', messageRoutes);
+app.use('/chat/api/tags', tagRoutes);
+app.use('/chat/api/quick-replies', quickReplyRoutes);
+app.use('/chat/api/settings', settingsRoutes);
+app.use('/chat/api/webhook', webhookRoutes);
 
 // Health check
 app.get('/chat/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date() }));
@@ -86,7 +86,7 @@ async function bootstrap() {
   const PORT = process.env.PORT || 3001;
   server.listen(PORT, () => {
     logger.info(`🚀 Servidor rodando na porta ${PORT}`);
-    logger.info(`   Webhook: POST https://nucleofix.cloud/chat/api/webhook`);
+    logger.info(`   Webhook: POST https://infinisolutions.cloud/chat/api/webhook`);
   });
 }
 

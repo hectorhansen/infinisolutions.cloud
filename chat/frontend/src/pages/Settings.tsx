@@ -126,7 +126,7 @@ export default function SettingsPage() {
                     <div className="mt-4 p-3 bg-brand-900/30 border border-brand-800/50 rounded-lg">
                         <p className="text-xs text-brand-300 font-medium">URL do Webhook para configurar na Meta:</p>
                         <code className="text-xs text-brand-200 font-mono mt-1 block break-all">
-                            https://nucleofix.cloud/chat/api/webhook
+                            https://infinisolutions.cloud/chat/api/webhook
                         </code>
                     </div>
 

@@ -89,7 +89,7 @@ export default function LoginPage() {
                 </div>
 
                 <p className="text-center text-gray-600 text-xs mt-6">
-                    nucleofix.cloud/chat · Acesso restrito
+                    infinisolutions.cloud/chat · Acesso restrito
                 </p>
             </div>
         </div>

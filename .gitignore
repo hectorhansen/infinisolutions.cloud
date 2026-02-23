@@ -1,0 +1,27 @@
+# ── Dependências ────────────────────────────────────────────────
+node_modules/
+chat/backend/node_modules/
+chat/frontend/node_modules/
+
+# ── Variáveis de ambiente (NUNCA subir para o git!) ──────────────
+.env
+chat/backend/.env
+
+# ── Build do frontend (gerado automaticamente) ───────────────────
+# Comente as linhas abaixo se quiser que o build suba junto com o git
+# chat/backend/public/assets/
+# chat/backend/public/index.html
+
+# ── Logs ────────────────────────────────────────────────────────
+logs/
+*.log
+chat/backend/logs/
+
+# ── Storage de uploads (arquivos de usuário) ─────────────────────
+chat/backend/storage/
+
+# ── OS / Editor ──────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
