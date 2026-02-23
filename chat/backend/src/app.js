@@ -65,6 +65,20 @@ app.use('/chat/api/webhook', webhookRoutes);
 // Health check
 app.get('/chat/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date() }));
 
+// ── Servidor do Frontend (React SPA) ───────────────────────────
+// Serve os arquivos estáticos do React no caminho /chat
+app.use('/chat', express.static(path.join(__dirname, '..', 'public')));
+
+// Qualquer outra rota dentro de /chat que não for API, devolve o React (para React Router funcionar)
+app.get('/chat/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
+
+// Redireciona a raiz principal para /chat
+app.get('/', (req, res) => {
+  res.redirect('/chat');
+});
+
 // ── Tratamento de erros global ─────────────────────────────────
 // eslint-disable-next-line no-unused-vars
 app.use((err, _req, res, _next) => {
