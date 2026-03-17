@@ -6,10 +6,10 @@ define('WA_APP_SECRET',         getenv('WA_APP_SECRET')         ?: 'seu_app_secr
 define('WA_WEBHOOK_VERIFY_TOKEN', getenv('WA_WEBHOOK_VERIFY_TOKEN') ?: 'meu_token_secreto');
 
 // Banco de dados
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'wabmanager');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost'); // Mantenha localhost se estiver no mesmo servidor
+define('DB_NAME', getenv('DB_NAME') ?: 'u752688765_nucleo26');
+define('DB_USER', getenv('DB_USER') ?: 'u752688765_nucleo26');
+define('DB_PASS', getenv('DB_PASS') ?: 'Nucleo2026#0');
 
 // Segurança
 define('CRON_SECRET_KEY', getenv('CRON_SECRET_KEY') ?: 'chave_cron_aqui');
