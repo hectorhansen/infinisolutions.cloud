@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - WhatsApp Business Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wa: {
+                            light: '#25D366',
+                            DEFAULT: '#128C7E',
+                            dark: '#075E54',
+                            bg: '#E5DDD5',
+                            bubblein: '#FFFFFF',
+                            bubbleout: '#E2F7CB'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 h-screen overflow-hidden flex font-sans text-gray-800">
+
+    <!-- Sidebar Lateral Esquerda (Menu Principal) -->
+    <nav class="w-20 bg-gray-900 flex flex-col items-center py-6 text-gray-400">
+        <div class="mb-8 cursor-pointer text-white">
+            <i class="fa-brands fa-whatsapp text-4xl"></i>
+        </div>
+        
+        <div class="flex-1 flex flex-col gap-6">
+            <button class="w-12 h-12 rounded-xl flex items-center justify-center hover:bg-gray-800 hover:text-white bg-gray-800 text-white transition-colors relative" title="Chats" onclick="switchTab('chats')">
+                <i class="fa-regular fa-comment-dots text-xl"></i>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full hidden" id="globalUnreadBadge"></span>
+            </button>
+            <button class="w-12 h-12 rounded-xl flex items-center justify-center hover:bg-gray-800 hover:text-white transition-colors" title="Contatos" onclick="switchTab('contacts')">
+                <i class="fa-regular fa-address-book text-xl"></i>
+            </button>
+            <!-- Apenas admins veem este menu -->
+            <button id="adminMenuBtn" class="w-12 h-12 rounded-xl flex items-center justify-center hover:bg-gray-800 hover:text-white transition-colors hidden" title="Supervisão" onclick="switchTab('admin')">
+                <i class="fa-solid fa-chart-line text-xl"></i>
+            </button>
+        </div>
+
+        <div class="mt-auto flex flex-col gap-6 items-center">
+            <button class="w-10 h-10 rounded-full bg-gray-700 overflow-hidden border-2 border-transparent hover:border-gray-500 transition-colors" title="Meu Perfil">
+                <img src="https://ui-avatars.com/api/?name=Op&background=random" id="myAvatar" class="w-full h-full object-cover">
+            </button>
+            <button class="text-gray-500 hover:text-white transition-colors" onclick="logout()" title="Sair">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Coluna da Lista de Conversas -->
+    <aside class="w-80 border-r border-gray-200 bg-white flex flex-col shadow-[2px_0_8px_-4px_rgba(0,0,0,0.1)] z-10" id="chatsListPanel">
+        <header class="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+            <h2 class="font-semibold text-lg">Conversas</h2>
+            <div class="flex gap-2">
+                <button class="text-gray-500 hover:text-gray-800" title="Filtros"><i class="fa-solid fa-filter"></i></button>
+                <button class="text-gray-500 hover:text-gray-800" title="Nova Conversa"><i class="fa-solid fa-pen-to-square"></i></button>
+            </div>
+        </header>
+
+        <!-- Filtro Rápido -->
+        <div class="flex border-b border-gray-100 text-sm">
+            <button class="flex-1 py-2 font-medium text-wa border-b-2 border-wa" onclick="filterList('mine', this)">Minhas</button>
+            <button class="flex-1 py-2 font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" onclick="filterList('unassigned', this)">Fila <span class="bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded-full text-xs ml-1 font-bold" id="queueCount">0</span></button>
+        </div>
+
+        <div class="p-3">
+            <div class="relative">
+                <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+                <input type="text" placeholder="Buscar..." class="w-full bg-gray-100 text-sm rounded-lg pl-9 pr-3 py-2.5 outline-none focus:ring-1 focus:ring-wa border-none">
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto" id="conversationList">
+            <!-- Loading Skeletons via JS inicialmente -->
+            <div class="p-4 text-center text-gray-400"><i class="fa-solid fa-spinner fa-spin"></i></div>
+        </div>
+    </aside>
+
+    <!-- Coluna Central: O Chat em si -->
+    <main class="flex-1 flex flex-col bg-wa-bg relative" id="chatArea">
+        <!-- Vazia (nenhum chat selecionado) -->
+        <div id="emptyChat" class="absolute inset-0 flex flex-col items-center justify-center text-center bg-gray-50 z-20">
+            <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                <i class="fa-brands fa-whatsapp text-4xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-700">WhatsApp Business Manager</h3>
+            <p class="text-gray-500 mt-2">Escolha uma conversa na lista para começar a atender.</p>
+        </div>
+
+        <!-- Cabeçalho do Chat -->
+        <header class="h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between shadow-sm z-10 hidden" id="chatHeader">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="toggleRightPanel()">
+                <img src="" id="activeContactPic" class="w-10 h-10 rounded-full object-cover bg-gray-200 border border-gray-100">
+                <div>
+                    <h3 class="font-semibold text-gray-800 leading-tight" id="activeContactName">Carregando...</h3>
+                    <p class="text-xs text-wa-dark font-medium" id="activeContactPhone">...</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button class="w-8 h-8 rounded-full hover:bg-gray-100 text-gray-500 transition-colors" title="Transferir" onclick="openTransferModal()"><i class="fa-solid fa-share"></i></button>
+                <button class="w-8 h-8 rounded-full hover:bg-gray-100 text-gray-500 transition-colors" title="Resolver" onclick="resolveChat()"><i class="fa-solid fa-check"></i></button>
+                <button class="w-8 h-8 rounded-full hover:bg-gray-100 text-gray-500 transition-colors" onclick="toggleRightPanel()"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+            </div>
+        </header>
+
+        <!-- Mensagens Scroll -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-[url('https://web.whatsapp.com/img/bg-chat-tile-dark_a4be512e7195b6b733d9110b408f075d.png')] bg-repeat bg-auto hidden" style="opacity: 0.1; position: absolute; inset:0; pointer-events:none;" id="chatBg"></div>
+        <div class="flex-1 overflow-y-auto p-6 space-y-3 z-10 hidden" id="chatHistory" style="scroll-behavior: smooth;">
+            <!-- Renderizado via JS -->
+        </div>
+
+        <!-- Input Box -->
+        <footer class="bg-gray-50 px-4 py-3 border-t border-gray-200 z-10 hidden" id="chatFooter">
+            <div class="flex items-end gap-2 bg-white rounded-xl shadow-sm border border-gray-300 p-2 focus-within:border-wa transition-colors relative">
+                
+                <!-- Botões Esquerdos -->
+                <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg"><i class="fa-regular fa-face-smile text-xl"></i></button>
+                <div class="relative group">
+                    <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg"><i class="fa-solid fa-paperclip text-xl"></i></button>
+                    <!-- Menu flutuante de anexos (hover) -->
+                    <div class="absolute bottom-full left-0 mb-2 bg-white rounded-xl shadow-xl border border-gray-100 p-2 hidden group-hover:flex flex-col gap-2 min-w-[150px] animate-fade-in-up">
+                        <button class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg text-sm text-left"><div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-image"></i></div> Fotos e vídeos</button>
+                        <button class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg text-sm text-left"><div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-file-lines"></i></div> Documento</button>
+                    </div>
+                </div>
+
+                <!-- Textarea auto-resize -->
+                <textarea id="messageInput" rows="1" class="flex-1 bg-transparent border-none outline-none resize-none px-2 py-2.5 max-h-32 min-h-[44px] text-[15px] placeholder-gray-400" placeholder="Digite uma mensagem ou digite '/' para atalhos..."></textarea>
+
+                <!-- Botão de Enviar (muda pra mic qnd vazio) -->
+                <button id="sendBtn" class="p-2 w-11 h-11 bg-wa hover:bg-wa-dark text-white shadow-md transition-colors rounded-full flex items-center justify-center mb-0.5" onclick="sendTextMessage()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+
+                <!-- Popover de Quick Replies (Ativado via /) -->
+                <div id="quickRepliesPopup" class="absolute bottom-full left-12 mb-2 w-64 bg-white rounded-xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.2)] border border-gray-100 hidden z-50">
+                    <div class="px-3 py-2 border-b border-gray-100 bg-gray-50 rounded-t-xl text-xs font-medium text-gray-500 uppercase tracking-wider">Respostas Rápidas</div>
+                    <div class="max-h-60 overflow-y-auto p-1" id="quickRepliesList">
+                        <!-- Itens renderizados no JS -->
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Coluna Direita: Info do Contato -->
+    <aside class="w-80 border-l border-gray-200 bg-white shadow-[-2px_0_8px_-4px_rgba(0,0,0,0.1)] hidden z-20 overflow-y-auto" id="rightPanel">
+        <div class="p-6 flex flex-col items-center border-b border-gray-100 bg-gray-50 relative">
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-gray-800" onclick="toggleRightPanel()"><i class="fa-solid fa-times"></i></button>
+            <img src="" id="infoPic" class="w-28 h-28 rounded-full object-cover bg-white border-4 border-white shadow-md mb-4">
+            <h2 class="text-xl font-bold text-gray-800 text-center" id="infoName">Nome do Contato</h2>
+            <p class="text-gray-500 font-medium mt-1" id="infoPhone">+55 11 9999-9999</p>
+            
+            <div class="flex gap-2 mt-4">
+                <button class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fa-solid fa-phone"></i></button>
+                <button class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fa-solid fa-video"></i></button>
+                <button class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 shadow-sm" onclick="alert('Funcionalidade de bloquear em breve')"><i class="fa-solid fa-ban"></i></button>
+            </div>
+        </div>
+
+        <div class="p-5 border-b border-gray-100">
+            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Etiquetas (Tags)</h4>
+            <div class="flex flex-wrap gap-2" id="infoTags">
+                <!-- <span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">VIP</span> -->
+            </div>
+            <button class="mt-3 text-sm text-wa font-medium hover:underline flex items-center gap-1"><i class="fa-solid fa-plus text-xs"></i> Adicionar tag</button>
+        </div>
+
+        <div class="p-5 border-b border-gray-100 bg-yellow-50/30">
+            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Notas Internas</h4>
+            <textarea class="w-full text-sm bg-yellow-100/50 border border-yellow-200 rounded-lg p-3 outline-none focus:border-yellow-400 resize-none" rows="3" placeholder="Adicione notas visíveis apenas para a equipe..."></textarea>
+        </div>
+    </aside>
+
+    <script src="js/app.js"></script>
+    <script src="js/inbox.js"></script>
+    <script src="js/chat.js"></script>
+    
+    <style>
+        .animate-fade-in-up { animation: fadeInUp 0.2s ease-out forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Auto-resize textarea magic handled via JS mas básico limitador CSS */
+        textarea::-webkit-scrollbar { width: 6px; }
+        textarea::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+    </style>
+</body>
+</html>
