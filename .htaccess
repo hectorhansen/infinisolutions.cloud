@@ -1,0 +1,19 @@
+# Impedir listagem de diretórios (Causa o 403 Forbidden se acessado um dir sem index.php)
+Options -Indexes
+
+# Bloquear acesso a arquivos sensíveis
+<FilesMatch "^\.(env|git|htaccess|htpasswd|ini|log|sh|inc|bak|sql)$">
+    Require all denied
+</FilesMatch>
+
+# Proteger o config.php e db.php para nunca serem lidos como texto bruto
+<FilesMatch "^(config\.php|db\.php)$">
+    Require all denied
+</FilesMatch>
+
+# Habilitar CORS se for necessário acessar a API de outro domínio (opcional)
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+</IfModule>
