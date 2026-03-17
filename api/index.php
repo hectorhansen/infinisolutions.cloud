@@ -53,6 +53,10 @@ switch ($action) {
         require 'events.php';
         break;
 
+    case 'metrics':
+        require 'metrics.php';
+        break;
+
     default:
         sendJson(['error' => 'Invalid or missing API action'], 404);
         break;
