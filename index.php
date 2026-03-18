@@ -1,4 +1,4 @@
 <?php
-// Redirecionar acessos à raiz da API para o frontend público caso acionado por navegador
-header('Location: /public/index.html');
+// Redireciona para o portal Intranet (index.html na mesma pasta)
+header('Location: /index.html');
 exit;
