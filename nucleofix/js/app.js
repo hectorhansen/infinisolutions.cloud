@@ -2,7 +2,7 @@
  * app.js - Configurações base, auth e helpers globais
  */
 
-const API_BASE = '/api/index.php?action=';
+const API_BASE = '../api/index.php?action=';
 
 // Interceptor simples do Fetch para sempre mandar o Token e tratar o 401
 const api = {

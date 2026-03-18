@@ -23,9 +23,10 @@ O repositório é segmentado em quatro frentes principais:
 
 - `/api/` - Controladores das requisições via JavaScript (Endpoints REST). Contém o roteador principal `index.php`.
 - `/lib/` - Classes focadas em Regra de Negócios pura (Auth, Assign, Queue, WhatsApp, Hmac).
-- `/public/` - Todo o HTML, JS e CSS do Client-side. Esta deve ser a raiz docroot exposta ao público para maior segurança.
+- `/nucleofix/` - Frontend (HTML, JS, CSS) do aplicativo original de gestão do WhatsApp (antigo public/).
+- `/granfino/` - Frontend reservado para a futura aplicação "Granfino".
 - `/uploads/` - Onde mídias recebidas do WhatsApp (Imagens, Áudios) serão armazenadas.
-- `/` (Raiz) - Scripts autônomos como o Webhook receptor (`webhook.php`), o Worker assíncrono (`cron.php`), a inicialização (`seed.php`) e os arquivos de conexão base (`config.php`, `db.php`).
+- `/` (Raiz) - Receptáculo da docroot. Contém o `index.html` estilo Netflix da Intranet, scripts autônomos como o Webhook receptor (`webhook.php`), o Worker assíncrono (`cron.php`), a inicialização (`seed.php`) e os arquivos de conexão base (`config.php`, `db.php`).
 
 ## 4. O Fluxo de Eventos (Event Loop)
 As hospedagens compartilhadas limitam processos contínuos (Daemons). Foi desenhada uma arquitetura engenhosa:
