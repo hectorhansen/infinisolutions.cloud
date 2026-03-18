@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,8 +37,8 @@
             color: #fff;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             overflow: hidden;
-            background-image: 
-                linear-gradient(to bottom, rgba(11,11,11,0.85) 0%, rgba(11,11,11,0.95) 100%),
+            background-image:
+                linear-gradient(to bottom, rgba(11, 11, 11, 0.85) 0%, rgba(11, 11, 11, 0.95) 100%),
                 url('https://odatacolocation.com/wp-content/uploads/2021/04/Racks-do-data-center-ODATA-Por-que-o-Colocation-e-fundamental-para-o-futuro-da-nuvem-hibrida-1110x390.jpg');
             background-size: cover;
             background-position: center;
@@ -52,7 +53,8 @@
         }
 
         .app-card:hover .app-box {
-            border-color: #007FFF; /* Azul Infini */
+            border-color: #007FFF;
+            /* Azul Infini */
             box-shadow: 0 0 15px rgba(0, 127, 255, 0.5);
         }
 
@@ -81,8 +83,11 @@
         .app-box::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.4));
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.4));
         }
 
         .app-title {
@@ -94,11 +99,13 @@
         }
 
         @media (min-width: 768px) {
-            .app-title { font-size: 18px; }
+            .app-title {
+                font-size: 18px;
+            }
         }
 
         .navbar {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
         }
 
         .coming-soon-badge {
@@ -116,18 +123,20 @@
         }
     </style>
 </head>
+
 <body class="h-screen flex flex-col items-center justify-center animate-fade-in relative">
 
     <!-- Navbar -->
     <nav class="absolute top-0 left-0 w-full p-6 navbar z-50 flex justify-between items-center">
         <!-- Logo -->
         <a href="#" class="cursor-pointer">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiTUKFSLcCv4L0n3QOw7zZy78TBjtpHXC17g&s" alt="Infini Solutions" class="h-10 md:h-12 object-contain" 
-                 onerror="this.outerHTML='<div class=\'flex items-center tracking-tight font-bold text-3xl md:text-4xl\'><span class=\'text-white\'>infini</span><span class=\'text-[#007FFF] font-extrabold\'>Solutions</span></div>'">
+            <img src="/logo_inifni_transparente.png" alt="Infini Solutions" class="h-10 md:h-12 object-contain"
+                onerror="this.outerHTML='<div class=\'flex items-center tracking-tight font-bold text-3xl md:text-4xl\'><span class=\'text-white\'>infini</span><span class=\'text-[#007FFF] font-extrabold\'>Solutions</span></div>'">
         </a>
-        
+
         <!-- Botão Login Admin (Engrenagem) -->
-        <button onclick="document.getElementById('adminModal').classList.remove('hidden')" class="text-gray-400 hover:text-white cursor-pointer transition flex items-center gap-2">
+        <button onclick="document.getElementById('adminModal').classList.remove('hidden')"
+            class="text-gray-400 hover:text-white cursor-pointer transition flex items-center gap-2">
             <i class="fa-solid fa-user-lock text-xl"></i>
             <span class="hidden md:inline font-medium text-sm">Admin</span>
         </button>
@@ -140,25 +149,30 @@
         </h1>
 
         <div class="flex flex-wrap justify-center gap-6 md:gap-10">
-            
+
             <!-- App 1: NucleoFix (Ativo) -->
-            <a href="https://nucleofix.infinisolutions.cloud/" class="app-card flex flex-col items-center cursor-pointer group outline-none">
-                <div class="app-box group-focus:border-brand-blue group-focus:shadow-[0_0_15px_rgba(0,127,255,0.5)] bg-gradient-to-br from-blue-900 to-gray-800">
+            <a href="https://nucleofix.infinisolutions.cloud/"
+                class="app-card flex flex-col items-center cursor-pointer group outline-none">
+                <div
+                    class="app-box group-focus:border-brand-blue group-focus:shadow-[0_0_15px_rgba(0,127,255,0.5)] bg-gradient-to-br from-blue-900 to-gray-800">
                     <i class="fa-brands fa-whatsapp text-6xl text-white z-10"></i>
                 </div>
                 <span class="app-title group-focus:text-white font-medium">NucleoFix</span>
             </a>
 
             <!-- App 2: Granfino (Ativo) -->
-            <a href="https://granfino.infinisolutions.cloud/" class="app-card flex flex-col items-center cursor-pointer group outline-none relative w-[100px] md:w-[160px]">
-                <div class="app-box group-focus:border-brand-blue group-focus:shadow-[0_0_15px_rgba(0,127,255,0.5)] bg-gradient-to-br from-blue-900 to-gray-800 flex-col relative w-full">
+            <a href="https://granfino.infinisolutions.cloud/"
+                class="app-card flex flex-col items-center cursor-pointer group outline-none relative w-[100px] md:w-[160px]">
+                <div
+                    class="app-box group-focus:border-brand-blue group-focus:shadow-[0_0_15px_rgba(0,127,255,0.5)] bg-gradient-to-br from-blue-900 to-gray-800 flex-col relative w-full">
                     <i class="fa-solid fa-store text-5xl text-white z-10 mb-2"></i>
                 </div>
                 <span class="app-title group-focus:text-white font-medium">Granfino</span>
             </a>
 
             <!-- App 3: Portal RH (Apenas Placeholder) -->
-            <div class="app-card flex flex-col items-center cursor-not-allowed opacity-50 relative w-[100px] md:w-[160px]">
+            <div
+                class="app-card flex flex-col items-center cursor-not-allowed opacity-50 relative w-[100px] md:w-[160px]">
                 <div class="app-box bg-gradient-to-br from-gray-700 to-gray-900 flex-col relative w-full">
                     <i class="fa-solid fa-users text-5xl text-gray-500 z-10 mb-2"></i>
                     <div class="coming-soon-badge border-gray-500 text-gray-500">Futuro</div>
@@ -167,7 +181,8 @@
             </div>
 
             <!-- App 4: DeskTicket (Apenas Placeholder) -->
-            <div class="app-card flex flex-col items-center cursor-not-allowed opacity-50 relative w-[100px] md:w-[160px]">
+            <div
+                class="app-card flex flex-col items-center cursor-not-allowed opacity-50 relative w-[100px] md:w-[160px]">
                 <div class="app-box bg-gradient-to-br from-gray-700 to-gray-900 flex-col relative w-full">
                     <i class="fa-solid fa-headset text-5xl text-gray-500 z-10 mb-2"></i>
                     <div class="coming-soon-badge border-gray-500 text-gray-500">Futuro</div>
@@ -177,25 +192,32 @@
 
         </div>
 
-        <button class="mt-16 md:mt-24 px-8 py-2 border border-gray-500 text-gray-400 hover:text-white hover:border-white transition tracking-widest uppercase text-sm font-medium rounded-sm">
+        <button
+            class="mt-16 md:mt-24 px-8 py-2 border border-gray-500 text-gray-400 hover:text-white hover:border-white transition tracking-widest uppercase text-sm font-medium rounded-sm">
             Gerenciar Aplicações
         </button>
     </div>
 
     <!-- Modal Login de Admin da Intranet -->
-    <div id="adminModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center animate-fade-in">
+    <div id="adminModal"
+        class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center animate-fade-in">
         <div class="bg-gray-900 border border-gray-700 p-8 rounded-lg shadow-2xl w-full max-w-sm relative">
-            <button onclick="document.getElementById('adminModal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-white transition">
+            <button onclick="document.getElementById('adminModal').classList.add('hidden')"
+                class="absolute top-4 right-4 text-gray-500 hover:text-white transition">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
             <h2 class="text-2xl font-semibold text-white mb-6">Administração</h2>
-            
-            <form onsubmit="event.preventDefault(); alert('Login para o portal de administração será implementado na retaguarda.');">
+
+            <form
+                onsubmit="event.preventDefault(); alert('Login para o portal de administração será implementado na retaguarda.');">
                 <div class="mb-4">
                     <label class="block text-gray-400 text-sm mb-2" for="adminCode">Código de Acesso</label>
-                    <input type="password" id="adminCode" required class="w-full bg-gray-800 text-white border border-gray-600 rounded px-4 py-3 focus:outline-none focus:border-brand-blue transition" placeholder="Insira o código">
+                    <input type="password" id="adminCode" required
+                        class="w-full bg-gray-800 text-white border border-gray-600 rounded px-4 py-3 focus:outline-none focus:border-brand-blue transition"
+                        placeholder="Insira o código">
                 </div>
-                <button type="submit" class="w-full bg-brand-blue hover:bg-blue-600 text-white font-bold py-3 px-4 rounded transition shadow-[0_0_15px_rgba(0,127,255,0.4)]">
+                <button type="submit"
+                    class="w-full bg-brand-blue hover:bg-blue-600 text-white font-bold py-3 px-4 rounded transition shadow-[0_0_15px_rgba(0,127,255,0.4)]">
                     Entrar no Painel
                 </button>
             </form>
@@ -203,4 +225,5 @@
     </div>
 
 </body>
+
 </html>
