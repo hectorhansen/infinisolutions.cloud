@@ -5,6 +5,9 @@
 
 namespace Finance\Api;
 
+require_once __DIR__ . '/../lib/Finance.php';
+require_once __DIR__ . '/../lib/Reports.php';
+
 use Finance\Lib\Reports;
 use Finance\Lib\Helpers;
 use Exception;
