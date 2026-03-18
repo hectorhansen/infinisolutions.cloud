@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/lib/FinanceDB.php';
+require_once __DIR__ . '/lib/Auth.php';
 use Finance\Lib\FinanceDB;
 
 try {
