@@ -1,4 +1,23 @@
 <?php
+// Handler global: garante que qualquer erro/exception retorne JSON válido
+// evitando o erro "Unexpected end of JSON input" no cliente
+set_exception_handler(function (Throwable $e) {
+    header('Content-Type: application/json');
+    http_response_code(500);
+    echo json_encode([
+        'error'   => 'Erro interno do servidor.',
+        'detail'  => $e->getMessage(),  // Remover em produção se quiser ocultar detalhes
+        'file'    => basename($e->getFile()),
+        'line'    => $e->getLine(),
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+});
+
+set_error_handler(function (int $errno, string $errstr, string $errfile, int $errline) {
+    // Converte erros PHP em exceptions para serem capturados acima
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
 require_once '../config.php';
 require_once '../db.php';
 require_once '../helpers.php';
