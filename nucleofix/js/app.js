@@ -2,14 +2,14 @@
  * app.js - Configurações base, auth e helpers globais
  */
 
-const API_BASE = '../api/index.php?action=';
+const API_BASE = 'https://infinisolutions.cloud/api/index.php?action=';
 
 // Interceptor simples do Fetch para sempre mandar o Token e tratar o 401
 const api = {
     async request(action, options = {}) {
         const token = localStorage.getItem('wab_token');
         if (!token) {
-            window.location.href = 'login.html'; // Tchau
+            window.location.href = 'index.html'; // Tchau
             return null;
         }
 
@@ -24,7 +24,7 @@ const api = {
             
             if (res.status === 401) {
                 localStorage.clear();
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
                 return null;
             }
 
@@ -53,7 +53,7 @@ const api = {
 
 // Se não tiver na tela de login, e não tiver token, chuta pra fora
 if (window.location.pathname.includes('dashboard') && !localStorage.getItem('wab_token')) {
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 }
 
 async function logout() {
@@ -61,7 +61,7 @@ async function logout() {
         await api.post('logout');
     } catch(e) {} finally {
         localStorage.clear();
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     }
 }
 
