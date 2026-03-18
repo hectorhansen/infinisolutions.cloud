@@ -194,7 +194,7 @@ const app = {
                     <p class="text-sm text-slate-400 mb-4 truncate"><i class="fa-solid fa-building text-xs mr-1 opacity-70"></i> ${p.client || 'Sem cliente'}</p>
                     
                     <div class="mt-auto pt-4 border-t border-slate-700/50 flex justify-between text-sm text-slate-400">
-                        <div title="Sócio A / Sócio B split %"><i class="fa-solid fa-chart-pie mr-1 opacity-70"></i> ${p.split_a}/${p.split_b}%</div>
+                        <div title="André / Hector split %"><i class="fa-solid fa-chart-pie mr-1 opacity-70"></i> ${p.split_a}/${p.split_b}%</div>
                         <div title="Criado em"><i class="fa-regular fa-calendar mr-1 opacity-70"></i> ${this.formatDate(p.created_at)}</div>
                     </div>
                 </div>`;
@@ -217,11 +217,11 @@ const app = {
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm text-slate-300 mb-1">Lucro Sócio A (%)</label>
+                    <label class="block text-sm text-slate-300 mb-1">Lucro André (%)</label>
                     <input type="number" id="p_split_a" value="50" min="0" max="100" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-3 py-2 text-white outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm text-slate-300 mb-1">Lucro Sócio B (%)</label>
+                    <label class="block text-sm text-slate-300 mb-1">Lucro Hector (%)</label>
                     <input type="number" id="p_split_b" value="50" readOnly class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-400 outline-none cursor-not-allowed">
                 </div>
             </div>
@@ -286,7 +286,7 @@ const app = {
                             : '<span class="px-2 font-mono py-0.5 text-xs bg-slate-800 text-slate-400 border border-slate-600 rounded">CLOSED</span>'
                         }
                     </div>
-                    <p class="text-slate-400 pl-8"><i class="fa-solid fa-building text-xs mr-1 opacity-70"></i> ${p.client || 'Sem cliente'} — Split: Sócio A ${p.split_a}% / Sócio B ${p.split_b}%</p>
+                    <p class="text-slate-400 pl-8"><i class="fa-solid fa-building text-xs mr-1 opacity-70"></i> ${p.client || 'Sem cliente'} — Split: André ${p.split_a}% / Hector ${p.split_b}%</p>
                 </div>
                 ${p.status === 'open' 
                     ? `<div class="flex gap-2">
@@ -487,7 +487,7 @@ const app = {
             <!-- Print Header só visível na impressão -->
             <div class="hidden print:block mb-8 border-b pb-4 border-black">
                 <h1 class="text-3xl font-bold text-black uppercase">Fechamento: ${p.name}</h1>
-                <p class="text-gray-600 mt-1">Sócio A: ${p.split_a}% | Sócio B: ${p.split_b}% • Data do relatório: ${new Date().toLocaleDateString('pt-BR')}</p>
+                <p class="text-gray-600 mt-1">André: ${p.split_a}% | Hector: ${p.split_b}% • Data do relatório: ${new Date().toLocaleDateString('pt-BR')}</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -545,14 +545,14 @@ const app = {
         const netA = s.net_to_receive.partner_a;
         const reimbA = s.reimbursements.find(x => x.partner_id === 1)?.amount_to_reimburse || 0;
         
-        html += this.buildPartnerNetCard('Sócio A', p.split_a, grossA, reimbA, netA);
+        html += this.buildPartnerNetCard('André', p.split_a, grossA, reimbA, netA);
 
         // Partner B
         const grossB = s.split.partner_b;
         const netB = s.net_to_receive.partner_b;
         const reimbB = s.reimbursements.find(x => x.partner_id === 2)?.amount_to_reimburse || 0;
         
-        html += this.buildPartnerNetCard('Sócio B', p.split_b, grossB, reimbB, netB);
+        html += this.buildPartnerNetCard('Hector', p.split_b, grossB, reimbB, netB);
 
         html += `</div>`;
         document.getElementById('mainContainer').innerHTML = html;

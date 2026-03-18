@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `partners` (
 
 -- ------------------------------------------------------------
 -- Projetos
--- split_a / split_b: Porcentagem de lucro de cada sócio (Sócio A = ID 1, Sócio B = ID 2)
+-- split_a / split_b: Porcentagem de lucro de cada sócio (André = ID 1, Hector = ID 2)
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projects` (
     `id`         INT UNSIGNED     NOT NULL AUTO_INCREMENT,
@@ -91,8 +91,8 @@ INSERT INTO `finance_users` (`username`, `password_hash`) VALUES
 
 -- Parceiros/Origens default do sistema
 INSERT INTO `partners` (`id`, `name`, `type`) VALUES
-(1, 'Sócio A', 'pf'),
-(2, 'Sócio B', 'pf'),
+(1, 'André', 'pf'),
+(2, 'Hector', 'pf'),
 (3, 'Conta PJ', 'pj'),
 (4, 'Cartão PJ', 'pj');
 
