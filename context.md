@@ -25,6 +25,7 @@ O repositório é segmentado em quatro frentes principais:
 - `/lib/` - Classes focadas em Regra de Negócios pura (Auth, Assign, Queue, WhatsApp, Hmac).
 - `/nucleofix/` - Frontend (HTML, JS, CSS) do aplicativo original de gestão do WhatsApp (antigo public/).
 - `/granfino/` - Frontend reservado para a futura aplicação "Granfino".
+- `/infinicloud/` - Aplicação SPA do InfiniCloud (Compartilhamento de Arquivos) com API independente.
 - `/uploads/` - Onde mídias recebidas do WhatsApp (Imagens, Áudios) serão armazenadas.
 - `/` (Raiz) - Receptáculo da docroot. Contém o `index.html` estilo Netflix da Intranet, scripts autônomos como o Webhook receptor (`webhook.php`), o Worker assíncrono (`cron.php`), a inicialização (`seed.php`) e os arquivos de conexão base (`config.php`, `db.php`).
 
@@ -56,7 +57,21 @@ Centralizar o registro, acompanhamento e análise de chamadas do SAC, suportando
 
 ---
 
-## 7. Changelog & Histórico de Fases
+## 7. Módulo: InfiniCloud (Compartilhamento de Arquivos)
+O **InfiniCloud** é o terceiro sistema integrado à Intranet, construído para fornecer um hub corporativo de compartilhamento de arquivos sem limites rígidos de tamanho de upload, seguro e expirável.
+
+### Objetivo e Escopo
+Permitir que usuários autenticados façam upload de arquivos corporativos (PDF, ZIP, imagens, docs) e gerem um link público (`share.infinisolutions.cloud/{hash}`) com data de expiração. Após o prazo, um job automático exclui os arquivos do servidor físico para economizar espaço e encerra o link.
+
+### Stack e Arquitetura do Módulo
+- **Backend:** API REST em PHP 8 puro localizada em `/infinicloud/api/`. Implementa validação real de MIME types via `finfo` nativo, streaming em chunks com `readfile` para download limpo e hash SHA1 irrevogável gerado no banco. O painel é protegido por sessões e cookies padrão.
+- **Frontend:** Single-Page Application (SPA) assíncrona com vanilla JS em `/infinicloud/app.js`, consumindo a própria API. Interface premium glassmorphism, contando com área de drop de upload e progress bar usando XMLHttpRequest. Uma página secundária estática em PHP (`share.php`) lida publicamente com visitantes realizando requests GET.
+- **Banco de Dados Independente:** Roda num schema isolado (`u752688765_infinicloud`), abrigando `ic_users`, `ic_files` e `ic_share_links`. Soft-deletes mantêm a integridade visual, removendo apenas do storage físico.
+- **Hospedagem:** Subordinada à pasta `/infinicloud/` servida nativamente pelo subdomínio `share.infinisolutions.cloud`. Um `.user.ini` local estende os limitadores nativos do Apache/PHP para uploads em 512MB e `max_execution_time` elástico.
+
+---
+
+## 8. Changelog & Histórico de Fases
 
 ### [v1.0.0] - Março de 2026
 
@@ -98,3 +113,12 @@ Centralizar o registro, acompanhamento e análise de chamadas do SAC, suportando
 - [x] Migração do painel de Whatsapp Cloud original para um subdomínio (pasta `/nucleofix/`), renomeado formalmente para NucleoFix.
 - [x] Configuração de CORS Absoluto na API para acesso externo dos subdomínios.
 - [x] Incorporação do sistema Granfino (Serviço de Atendimento ao Consumidor) no subdomínio próprio em pasta independente `/granfino/` usando a infraestrutura do mesmo servidor PHP Apache.
+
+#### Fase 8: Módulo InfiniCloud (Compartilhamento de Arquivos Corporativo)
+- [x] Construção da API PHP 8 Puro (`upload.php`, `files.php`, `links.php`, `download.php`) baseada em restrição por sessão.
+- [x] Criação de Painel SPA Frontend (Dark mode glassmorphism) interconectado com a nova API para manipulação com Javascript puro e interatividade moderna (Progress bar/Toast).
+- [x] Configuração da pipeline de banco de dados nativa em schema próprio (`u752688765_infinicloud`) com cascata nas Foreign Keys, e Soft-deletes controlados por trigger backend.
+- [x] Módulo cron (`cron_cleanup.php`) protegido por chave para escaneamento e expurgo diário de mídias mortas, desocupando espaço real na VPS/Hostinger.
+- [x] Ajustes locais nos limitadores de upload da porta Apache com `.user.ini` próprio submetendo uploads em 512MB de ram.
+- [x] Adição do endpoint dinâmico `/share.php?hash=` (via `.htaccess`) processando links customizados.
+- [x] Inclusão do cartão interativo na tela central `/index.html` redirecionando para `share.infinisolutions.cloud`.
