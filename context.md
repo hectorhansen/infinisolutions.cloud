@@ -26,6 +26,7 @@ O repositório é segmentado em quatro frentes principais:
 - `/nucleofix/` - Frontend (HTML, JS, CSS) do aplicativo original de gestão do WhatsApp (antigo public/).
 - `/granfino/` - Frontend reservado para a futura aplicação "Granfino".
 - `/infinicloud/` - Aplicação SPA do InfiniCloud (Compartilhamento de Arquivos) com API independente.
+- `/finance/` - Aplicação SPA do InfiniFinance (Gestão de Projetos e Sociedade) e APIs matemáticas.
 - `/uploads/` - Onde mídias recebidas do WhatsApp (Imagens, Áudios) serão armazenadas.
 - `/` (Raiz) - Receptáculo da docroot. Contém o `index.html` estilo Netflix da Intranet, scripts autônomos como o Webhook receptor (`webhook.php`), o Worker assíncrono (`cron.php`), a inicialização (`seed.php`) e os arquivos de conexão base (`config.php`, `db.php`).
 
@@ -71,7 +72,21 @@ Permitir que usuários autenticados façam upload de arquivos corporativos (PDF,
 
 ---
 
-## 8. Changelog & Histórico de Fases
+## 8. Módulo: Infini Finance (Gestão de Sociedade)
+O **Infini Finance** é um sistema de administração financeira desenvolvido para parceiros (Sócios) que operam contratos conjuntos. O sistema cuida da matemática de lucros quando um sôcio pessoa física (PF) paga os custos do projeto (PJ) com seu próprio dinheiro.
+
+### Objetivo e Escopo
+Calcular o lucro líquido e fazer a divisão correta de parcelas do lucro ("Splits"), deduzindo e alertando sobre reembolsos devidos (Adiantamentos) para cada sócio participante da operação. 
+
+### Stack e Arquitetura do Módulo
+- **Backend:** Classes estritas de Negócio (`FinanceLogic.php` e `Reports.php`) operando via sub-APIs em `/finance/api/`. Conexão PDO protegida sem vazamento de variáveis de ambiente.
+- **Frontend:** Single-Page Application nativa e de altíssima performance usando o padrão Glassmorphism, roteada puramente no client-side via objeto global JS interligando as Views de Listagem e Relatório DRE.
+- **Banco de Dados Independente:** Schema centralizado `u752688765_finance` e sub-tabelas como `partners` e `projects`.
+- **Hospedagem:** Hospedado fisicamente na pasta `/finance/` e virtualizado pelo front controller via `finance.infinisolutions.cloud`.
+
+---
+
+## 9. Changelog & Histórico de Fases
 
 ### [v1.0.0] - Março de 2026
 
@@ -122,3 +137,10 @@ Permitir que usuários autenticados façam upload de arquivos corporativos (PDF,
 - [x] Ajustes locais nos limitadores de upload da porta Apache com `.user.ini` próprio submetendo uploads em 512MB de ram.
 - [x] Adição do endpoint dinâmico `/share.php?hash=` (via `.htaccess`) processando links customizados.
 - [x] Inclusão do cartão interativo na tela central `/index.html` redirecionando para `share.infinisolutions.cloud`.
+
+#### Fase 9: Módulo InfiniFinance (Gestão de Projetos e Sociedade)
+- [x] Criação da lógica complexa de Reembolsos e Splits com dedução de adiantamento PF (`FinanceLogic`).
+- [x] Construção das APIs (CRUD) rigorosas para Lançamentos, Categorias e Projetos em `/finance/api/`.
+- [x] Tela Single-Page baseada em JS Vanilla com menus laterais dinâmicos (Context Menu de Projeto).
+- [x] Dashboard de relatório cruzado (`Reports.php`) gerando o consolidado DRE limpo e as fatias de lucro de cada sócio.
+- [x] Inclusão do Subdomínio de atalho no Index global da Intranet.
