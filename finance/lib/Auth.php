@@ -15,8 +15,8 @@ class FinanceDB {
         if (!self::$instance) {
             $host = getenv('FINANCE_DB_HOST') ?: 'localhost';
             $name = getenv('FINANCE_DB_NAME') ?: 'u752688765_finance';
-            $user = getenv('FINANCE_DB_USER') ?: 'u752688765_finance';
-            $pass = getenv('FINANCE_DB_PASS') ?: 'Finance2026#'; // Ajuste conforme seu painel
+            $user = getenv('FINANCE_DB_USER') ?: 'u752688765_Finance';
+            $pass = getenv('FINANCE_DB_PASS') ?: 'Hg&PxUhXT|9';
 
             $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
             self::$instance = new PDO($dsn, $user, $pass, [
