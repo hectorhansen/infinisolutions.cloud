@@ -16,6 +16,7 @@ async function loadConversations() {
         renderConversations();
     } catch(e) {
         console.error("Falha ao carregar inbox", e);
+        alert("Erro ao carregar conversas: " + e.message);
     }
 }
 
