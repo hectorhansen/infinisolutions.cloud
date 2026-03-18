@@ -1,0 +1,19 @@
+# Protege acesso direto e varreduras
+Options -Indexes
+
+# Bloquear leitura de arquivos lógicos back-end
+<FilesMatch "^\.(env|git|htaccess|htpasswd|ini|log|sh|inc|bak|sql)$">
+    Require all denied
+</FilesMatch>
+
+# Proteger o db.php caso exista ou se espelhe com a raiz
+<FilesMatch "^(db\.php)$">
+    Require all denied
+</FilesMatch>
+
+# Rotas de API que vivem na pasta /api/ (opcionais, já que index.php lida com views/switches)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Se quiser passar URLs limpas no futuro:
+    # RewriteRule ^api/(.*)$ api/index.php?action=$1 [QSA,L]
+</IfModule>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infini Finance - Acesso</title>
+    <!-- Tailwind CSS Padrão Infini -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#22c55e', /* Primária (Dinheiro/Positivo) */
+                            red: '#ef4444',   /* Despesa/Alerta */
+                            dark: '#0f172a',  /* Fundo main */
+                            card: '#1e293b'   /* Fundo cards transparentes */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0b0b;
+            color: #fff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-image: 
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%),
+                url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Toast simples em Vanilla JS/CSS */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #ef4444; 
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            right: 30px;
+            bottom: 30px;
+            font-size: 14px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+
+<body class="h-screen flex items-center justify-center p-4">
+
+    <div class="glass-card p-10 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
+        <!-- Detalhe luminoso no topo do card -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-green to-teal-500"></div>
+
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold tracking-tight"><span class="text-white">infini</span><span class="text-brand-green">Finance</span></h1>
+            <p class="text-gray-400 text-sm mt-2">Gestão de Projetos e Sociedade</p>
+        </div>
+
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-300 mb-2">E-mail ou Usuário</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-user text-gray-500"></i>
+                    </div>
+                    <input type="email" id="username" required
+                        class="w-full bg-slate-800/80 border border-slate-600 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition"
+                        placeholder="admin@infinisolutions.cloud">
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Senha</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-lock text-gray-500"></i>
+                    </div>
+                    <input type="password" id="password" required
+                        class="w-full bg-slate-800/80 border border-slate-600 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition"
+                        placeholder="••••••••">
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn"
+                class="w-full bg-brand-green hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)] hover:shadow-[0_0_20px_rgba(34,197,94,0.5)] flex items-center justify-center gap-2">
+                <span>Acessar</span>
+                <i class="fa-solid fa-arrow-right text-sm"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="toast" class="toast"><i class="fa-solid fa-circle-exclamation mr-2"></i> <span id="toastMsg"></span></div>
+
+    <script>
+        // Check session before rendering form -> se logado, vai pro app
+        window.addEventListener('load', () => {
+            fetch('/api/index.php?action=check_auth')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.authenticated) {
+                        window.location.href = '/app.html';
+                    }
+                })
+                .catch(e => console.error("Error checking auth:", e));
+        });
+
+        function showToast(message, isError = true) {
+            const toast = document.getElementById("toast");
+            document.getElementById("toastMsg").innerText = message;
+            toast.style.backgroundColor = isError ? '#ef4444' : '#22c55e';
+            toast.className = "toast show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Autenticando...';
+
+            try {
+                const response = await fetch('/api/index.php?action=login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Login com sucesso! Redirecionando...', false);
+                    setTimeout(() => window.location.href = '/app.html', 800);
+                } else {
+                    showToast(data.message || 'Falha no login');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Acessar</span> <i class="fa-solid fa-arrow-right text-sm"></i>';
+                }
+            } catch (err) {
+                showToast('Erro de conexão ao servidor.');
+                btn.disabled = false;
+                btn.innerHTML = '<span>Acessar</span> <i class="fa-solid fa-arrow-right text-sm"></i>';
+            }
+        });
+    </script>
+</body>
+</html>
