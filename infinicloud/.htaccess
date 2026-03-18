@@ -1,0 +1,41 @@
+# InfiniCloud - .htaccess
+# Proteção, rotas limpas e bloqueio de acesso direto ao storage
+
+Options -Indexes
+
+# Bloqueia acesso direto à pasta storage/
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Bloqueia qualquer acesso direto a /storage/
+    RewriteRule ^storage/                -  [F,L]
+
+    # Se a URL NÃO for um arquivo ou diretório existente,
+    # e parecer um hash de 40 chars (SHA1) → redireciona para share.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([a-f0-9]{40})$         share.php?hash=$1 [QSA,L]
+
+    # Rota raiz → index.html
+    RewriteRule ^$                        index.html [L]
+</IfModule>
+
+# Protege arquivos sensíveis de acesso direto
+<FilesMatch "\.(php|sql|ini|log|sh)$">
+    <IfModule mod_authz_core.c>
+        # Permite apenas share.php e a pasta api/ via rewrite
+        # Demais .php são bloqueados de acesso direto externo
+    </IfModule>
+</FilesMatch>
+
+# Bloqueia listagem de diretórios
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+# Cabeçalhos de segurança
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
