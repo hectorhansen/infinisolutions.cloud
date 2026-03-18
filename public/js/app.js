@@ -9,7 +9,7 @@ const api = {
     async request(action, options = {}) {
         const token = localStorage.getItem('wab_token');
         if (!token) {
-            window.location.href = 'index.html'; // Tchau
+            window.location.href = 'login.html'; // Tchau
             return null;
         }
 
@@ -24,7 +24,7 @@ const api = {
             
             if (res.status === 401) {
                 localStorage.clear();
-                window.location.href = 'index.html';
+                window.location.href = 'login.html';
                 return null;
             }
 
@@ -53,7 +53,7 @@ const api = {
 
 // Se não tiver na tela de login, e não tiver token, chuta pra fora
 if (window.location.pathname.includes('dashboard') && !localStorage.getItem('wab_token')) {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
 }
 
 async function logout() {
@@ -61,7 +61,7 @@ async function logout() {
         await api.post('logout');
     } catch(e) {} finally {
         localStorage.clear();
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
     }
 }
 
