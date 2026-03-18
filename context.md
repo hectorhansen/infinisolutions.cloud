@@ -1,6 +1,6 @@
-# WhatsApp Business Manager - Context & Documentation
+# Infini Solutions - Portal Intranet Multi-App (Context & Docs)
 
-Este documento serve como o Ponto de Verdade Central do projeto, descrevendo a arquitetura, tecnologias e histórico de desenvolvimento da plataforma de gestão de atendimento via WhatsApp API Oficial.
+Este documento serve como o Ponto de Verdade Central do projeto, descrevendo a arquitetura, tecnologias e histórico de desenvolvimento da Intranet da Infini Solutions, que atua como hub centralizador de múltiplas aplicações corporativas (NucleoFix e Granfino).
 
 ## 1. Visão Geral do Sistema
 O sistema é um hub centralizador de mensagens do WhatsApp Cloud API. Ele permite que múltiplos operadores (atendentes) façam login via interface web e respondam a contatos em tempo real. A plataforma recebe nativamente os webhooks da Meta, salva no banco e direciona as conversas para operadores disponíveis.
@@ -42,7 +42,21 @@ As hospedagens compartilhadas limitam processos contínuos (Daemons). Foi desenh
 
 ---
 
-## 6. Changelog & Histórico de Fases
+## 6. Módulo: Granfino (Gestão de Qualidade & SAC)
+O **Granfino** é o segundo sistema integrado à Intranet, construído para substituir um sistema legado em Microsoft Access.
+
+### Objetivo e Escopo
+Centralizar o registro, acompanhamento e análise de chamadas do SAC, suportando importação de mais de 31 mil registros históricos do Access. Permite múltiplos atendentes, extração de relatórios automatizados de KPIs e maior segurança contra perda de dados.
+
+### Stack e Arquitetura do Módulo
+- **Backend:** Monólito em PHP 8.x puro, com PDO para prevenção de SQL Injection. Autenticação baseada em Sessions nativas (`auth()`).
+- **Frontend:** Server-side renderizado com HTML5/CSS3 nativos e Javascript puro para endpoints AJAX locais (ex: busca dinâmica de municípios).
+- **Banco de Dados Independente:** Roda num schema isolado (`u752688765_granfino`), composto essencialmente pelas tabelas `atendentes`, `chamadas` e `chamada_produtos`.
+- **Hospedagem:** Reside na sub-pasta `/granfino/` e é servido nativamente pelo subdomínio `granfino.infinisolutions.cloud`.
+
+---
+
+## 7. Changelog & Histórico de Fases
 
 ### [v1.0.0] - Março de 2026
 
@@ -76,3 +90,11 @@ As hospedagens compartilhadas limitam processos contínuos (Daemons). Foi desenh
 - [x] Motor de algoritmo automático de Atribuição aleatória (`Assignment.php` e endpoint router).
 - [x] Extratos numéricos consolidados via Endpoint de Supervisão `api/metrics.php`.
 - [x] Utilidade global de Deploy Inicial `seed.php` para povoar as tabelas.
+
+#### Fase 7: Portal Intranet e Extensibilidade Multi-App
+- [x] Criação da interface central (estilo Netflix) servindo como Hub (`index.html` na raiz).
+- [x] Atualização de design com branding da Infini Solutions e painel visual de aplicativos.
+- [x] Fim da redundância de diretórios removendo a antiga pasta `/public/` e expondo o core na `public_html`.
+- [x] Migração do painel de Whatsapp Cloud original para um subdomínio (pasta `/nucleofix/`), renomeado formalmente para NucleoFix.
+- [x] Configuração de CORS Absoluto na API para acesso externo dos subdomínios.
+- [x] Incorporação do sistema Granfino (Serviço de Atendimento ao Consumidor) no subdomínio próprio em pasta independente `/granfino/` usando a infraestrutura do mesmo servidor PHP Apache.
